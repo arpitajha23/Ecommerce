@@ -1,0 +1,33 @@
+########################
+#   Visual Studio (.NET)
+########################
+.vs/
+bin/
+obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+publish/
+out/
+
+########################
+#     Angular / Node
+########################
+node_modules/
+/dist
+/tmp
+/out-tsc
+/.angular
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+########################
+#      General
+########################
+.DS_Store
+Thumbs.db
+*.log
+
