@@ -1,0 +1,96 @@
+<div class="quickcart-login-wrapper">
+    <!-- Left Panel -->
+    <div class="quickcart-left-panel">
+        <div class="quickcart-brand">
+            <div class="flex align-items-center gap-2 justify-content-center">
+                <i class="pi pi-shopping-cart"></i>
+                <span class="brand-title">Quick<span class="text-primary">Cart</span></span>
+            </div>
+            <h2 class="welcome-title">Welcome Back!</h2>
+            <p class="welcome-text">Sign in to continue shopping, manage your orders, and unlock exclusive offers.</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="quickcart-login-form">
+            <!-- Email -->
+            <div class="quickcart-form-group">
+                <p-inputgroup>
+                    <!-- <p-inputgroup-addon>
+                        <i class="pi pi-envelope"></i>
+                    </p-inputgroup-addon> -->
+                    <p-floatlabel>
+                        <input id="email" type="email" pInputText formControlName="email" class="p-inputtext"
+                            [ngClass]="{ 'p-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched }"
+                            placeholder="Enter your email" />
+                        <!-- <label for="email">Email</label> -->
+                    </p-floatlabel>
+
+                </p-inputgroup>
+                <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="p-error">
+                    Valid email is required
+                </small>
+            </div>
+
+            <!-- Password -->
+            <div class="quickcart-form-group flex items-center gap-4">
+                <p-inputgroup>
+                    <!-- <label for="password">Password</label> -->
+                    <!-- <p-inputgroup-addon>
+                        <i class="pi pi-lock"></i>
+                    </p-inputgroup-addon> -->
+
+                    <p-floatlabel>
+                        <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="false"
+                            inputStyleClass="p-inputtext" class="p-password w-full"
+                            [ngClass]="{ 'p-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }"
+                            placeholder="Enter your password">
+                        </p-password>
+
+                    </p-floatlabel>
+
+                </p-inputgroup>
+                <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="p-error">
+                    Password is required
+                </small>
+
+            </div>
+            <div class="quickcart-forgot">
+                <a (click)="onForgotPassword()">Forgot Password?</a>
+            </div>
+
+            <!-- Sign In Button -->
+            <button pButton type="submit" label="Sign In" [disabled]="loginForm.invalid"
+                class="quickcart-login-button "></button>
+
+            <p-divider align="center" type="dotted">
+                <b>or</b>
+            </p-divider>
+
+            <!-- Social Logins -->
+            <button pButton type="button" label="Continue with Google" icon="pi pi-google"
+                (click)="onContinueWithGoogle()" class="quickcart-social-button">
+            </button>
+
+            <!-- Sign Up -->
+            <p class="quickcart-signup">
+                Don’t have an account?
+                <a (click)="onSignUp()">Sign Up</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="quickcart-right-panel">
+        <h2>Shop Smart<br>With QuickCart</h2>
+        <p class="italic">
+            “QuickCart makes shopping easier, faster, and more rewarding. Your everyday needs, just a click away.”
+        </p>
+
+        <div class="flex align-items-center gap-3">
+            <i class="pi pi-user border-circle" width="40"></i>
+            <div>
+                <p class="mb-0 font-medium">Michael Carter</p>
+                <small>Verified Customer</small>
+            </div>
+        </div>
+    </div>
+</div>

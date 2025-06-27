@@ -1,0 +1,130 @@
+.quickcart-login-wrapper {
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.quickcart-left-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.03);
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+}
+
+.quickcart-right-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #009688, #004d40);
+  color: #ffffff;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+}
+
+.quickcart-brand {
+  text-align: center;
+  margin-bottom: 1.25rem;
+
+  i {
+    // color: #2196f3;
+    color: white;
+    background: green;
+    width: 32px;
+    height: 21px;
+    padding: 2px 0 0 2px;
+  }
+
+  .brand-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #374151;
+
+    span {
+      color: #2196f3;
+    }
+  }
+
+  .welcome-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  .welcome-text {
+    color: #6b7280;
+  }
+}
+
+.quickcart-login-form {
+  width: 100%;
+  
+  @media (min-width: 768px) {
+    max-width: 22rem;
+  }
+}
+
+.quickcart-login-button {
+  width: 100%;
+  cursor: pointer;
+}
+
+.quickcart-social-button  {
+  width: 100%;
+  cursor: pointer;
+}
+
+.quickcart-forgot {
+  text-align: right;
+  margin-bottom: 1rem;
+
+  a {
+    font-size: 0.875rem;
+    color: #10b981
+;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.quickcart-signup {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+
+  a {
+    color: #10b981;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+p-inputgroup.p-inputgroup {
+    margin-bottom: 7px;
+}
+small.p-error {
+    color: red;
+}
