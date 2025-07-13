@@ -63,36 +63,46 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onLogin(){
-    if(this.loginForm.valid) {
-    console.log('Login form is valid');
-    const { email, password } = this.loginForm.value;
-    const request = new LoginRequest(email, password);
+  onLogin() {
+    debugger
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      const request = new LoginRequest(email, password);
 
       this.authService.login(request).subscribe({
-      next: (response) => {
-        console.log('Login successful:', response);
-        localStorage.setItem('token', response.token);
-        this.errorMessage = '';
-        this.router.navigate(['/endroute/dashboard']);
-      },
-      error: (err) => {
-        console.error('Login failed:', err);
-        this.errorMessage = 'Invalid credentials. Please try again.';
-      }
-    });
-      
-  }
-    else{
-      this.loginForm.markAllAsTouched();
-      console.log('Login failed', this.loginForm.errors);
-    }
+        next: (response) => {
+          console.log('Login successful:', response);
+          const token = response.token;
+          if (response.StatusCode === 200) {
+            localStorage.setItem('token', token);
+            this.errorMessage = '';
+            this.router.navigate(['/endroute/dashboard']);
+            // this.router.navigate(['/endroute/forgetpassword']);
+          } else {
+            this.errorMessage = 'Something went wrong. No token returned.';
+          }
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          if (err.status === 401) {
+            this.errorMessage = 'Invalid credentials. Please try again.';
+          } else if (err.status === 500) {
+            this.errorMessage = 'Server error. Please try later.';
+          } else {
+            this.errorMessage = 'Unexpected error occurred.';
+          }
+        }
+      });
 
+    } else {
+      this.loginForm.markAllAsTouched();
+      console.log('Login form is invalid', this.loginForm.errors);
+    }
   }
+
   
   onForgotPassword(): void {
     console.log('Forgot Password clicked');
-    // Add your forgot password logic here
     this.router.navigate(['/endroute/forgetpassword']);
 
   }

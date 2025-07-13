@@ -5,12 +5,11 @@
   background-color: #f8f9fa;
 
   .quickcart-side {
-    // flex: 1;
-    // background: url('/assets/register-side.jpg') no-repeat center center;
-    // background-size: cover;
-
-    // Optional gradient overlay
-    background: linear-gradient(to right, #f0f2f5, #dfe4ea);
+    flex: 1;
+    background: url('/assets/reset-side.jpg') no-repeat center center;
+    background-size: cover;
+    // Optional: use gradient or solid color instead
+    // background: linear-gradient(to bottom, #dfe9f3, #ffffff);
   }
 
   .quickcart-center-form {
@@ -32,8 +31,8 @@
 
       i {
         font-size: 2rem;
-        // color: #0d6efd;
-      }
+        color: #10b981
+        }
 
       .welcome-title {
         font-size: 24px;
@@ -66,30 +65,45 @@
         .p-error {
           font-size: 12px;
           margin-top: 0.25rem;
+          color: #dc3545;
+        }
+
+        .resend-link {
+          font-size: 13px;
+          margin-top: 0.5rem;
+          text-align: right;
+
+          a {
+            text-decoration: underline;
+            cursor: pointer;
+            color: #10b981;
+            font-weight: 500;
+          }
         }
       }
 
       .quickcart-login-button {
         width: 100%;
-        // background-color: #0d6efd;
         border: none;
         border-radius: 6px;
         padding: 0.75rem;
         font-weight: bold;
+        transition: background-color 0.3s ease;
       }
 
-      .quickcart-login-button:hover {
-        // background-color: #0b5ed7;
-      }
+    //   .quickcart-login-button:hover {
+    //     background-color: #0b5ed7;
+    //   }
 
       .quickcart-signup {
         font-size: 14px;
         text-align: center;
+        margin-top: 1rem;
 
         a {
-        //   color: #0d6efd;
-          text-decoration: underline;
           cursor: pointer;
+          text-decoration: underline;
+          color: #10b981;
         }
       }
     }
@@ -106,6 +120,7 @@
     .quickcart-center-form {
       max-width: 90%;
       margin: 2rem auto;
+      border-radius: 8px;
     }
   }
 }

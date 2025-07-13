@@ -1,1 +1,79 @@
-<p>register works!</p>
+<div class="quickcart-register-wrapper">
+  <!-- Left Margin / Decoration -->
+  <div class="quickcart-side quickcart-left-side">
+    <!-- You can add image or gradient here -->
+  </div>
+
+  <!-- Center Form -->
+  <div class="quickcart-center-form">
+    <div class="quickcart-brand text-center">
+      <i class="pi pi-shopping-cart text-3xl text-primary"></i>
+      <h2 class="welcome-title mt-2">Create Your Account</h2>
+      <p class="welcome-text">Sign up to start shopping smarter and tracking your orders effortlessly.</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="quickcart-form">
+      <!-- Fullname -->
+      <div class="quickcart-form-group">
+        <p-floatlabel>
+          <input id="fullname" type="text" pInputText formControlName="fullname" placeholder="Full Name"
+            [ngClass]="{ 'p-invalid': registerForm.get('fullname')?.invalid && registerForm.get('fullname')?.touched }" />
+        </p-floatlabel>
+        <small *ngIf="registerForm.get('fullname')?.invalid && registerForm.get('fullname')?.touched" class="p-error">
+          Full Name is required
+        </small>
+      </div>
+
+      <!-- Email -->
+      <div class="quickcart-form-group">
+        <p-floatlabel>
+          <input id="email" type="email" pInputText formControlName="email" placeholder="Email"
+            [ngClass]="{ 'p-invalid': registerForm.get('email')?.invalid && registerForm.get('email')?.touched }" />
+        </p-floatlabel>
+        <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="p-error">
+          Valid email is required
+        </small>
+      </div>
+
+      <!-- Phone -->
+      <div class="quickcart-form-group">
+        <p-floatlabel>
+          <input id="phone" type="text" pInputText formControlName="phone" placeholder="Phone"
+            [ngClass]="{ 'p-invalid': registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched }" />
+        </p-floatlabel>
+        <small *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched" class="p-error">
+          Phone number is required
+        </small>
+      </div>
+
+      <!-- Password -->
+      <div class="quickcart-form-group">
+        <p-floatlabel>
+          <p-password id="password" formControlName="password" [feedback]="false" [toggleMask]="true"
+            placeholder="Password"
+            inputStyleClass="p-inputtext"
+            [ngClass]="{ 'p-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched }">
+          </p-password>
+        </p-floatlabel>
+        <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="p-error">
+          Password is required
+        </small>
+      </div>
+
+      <!-- Submit Button -->
+      <button pButton type="submit" label="Sign Up" [disabled]="registerForm.invalid"
+        class="quickcart-login-button w-full mt-2"></button>
+
+      <!-- Already have an account -->
+      <p class="quickcart-signup mt-3 text-center">
+        Already have an account?
+        <a (click)="onBackToLogin()">Sign In</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- Right Margin / Decoration -->
+  <div class="quickcart-side quickcart-right-side">
+    <!-- You can add background, quote, or image -->
+  </div>
+</div>

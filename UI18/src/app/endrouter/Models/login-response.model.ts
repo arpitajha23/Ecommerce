@@ -4,5 +4,7 @@ export class LoginResponse {
     public token!: string;
     public expiresIn!: number;
     public userId!: string;
+    public name!: string;
+    public StatusCode: any;
 
 }

@@ -1,0 +1,71 @@
+<div class="quickcart-register-wrapper">
+  <!-- Optional Side Panel -->
+  <div class="quickcart-side quickcart-left-side"></div>
+
+  <!-- Center Reset Form -->
+  <div class="quickcart-center-form">
+    <div class="quickcart-brand text-center">
+      <i class="pi pi-lock text-3xl text-primary"></i>
+      <h2 class="welcome-title mt-2">Reset Your Password</h2>
+      <p class="welcome-text">Enter the OTP sent to your email and create a new password.</p>
+    </div>
+
+    <form [formGroup]="resetForm" (ngSubmit)="onSubmit()" class="quickcart-form">
+      <!-- OTP Field -->
+      <div class="quickcart-form-group">
+        <p-floatlabel>
+          <input id="otp" type="text" pInputText formControlName="otp" placeholder="Enter OTP"
+            [ngClass]="{ 'p-invalid': resetForm.get('otp')?.invalid && resetForm.get('otp')?.touched }" />
+        </p-floatlabel>
+        <small *ngIf="resetForm.get('otp')?.invalid && resetForm.get('otp')?.touched" class="p-error">
+          OTP is required
+        </small>
+
+        <p class="resend-link mt-2">
+          Didn't receive OTP? <a (click)="onResendOtp()">Resend OTP</a>
+        </p>
+      </div>
+
+      <!-- New Password -->
+      <div class="quickcart-form-group">
+        <p-floatlabel>
+          <p-password id="newPassword" formControlName="newPassword" [feedback]="false" [toggleMask]="true"
+            placeholder="New Password"
+            inputStyleClass="p-inputtext"
+            [ngClass]="{ 'p-invalid': resetForm.get('newPassword')?.invalid && resetForm.get('newPassword')?.touched }">
+          </p-password>
+        </p-floatlabel>
+        <small *ngIf="resetForm.get('newPassword')?.invalid && resetForm.get('newPassword')?.touched" class="p-error">
+          New password is required
+        </small>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="quickcart-form-group">
+        <p-floatlabel>
+          <p-password id="confirmPassword" formControlName="confirmPassword" [feedback]="false" [toggleMask]="true"
+            placeholder="Confirm Password"
+            inputStyleClass="p-inputtext"
+            [ngClass]="{ 'p-invalid': resetForm.hasError('passwordMismatch') && resetForm.get('confirmPassword')?.touched }">
+          </p-password>
+        </p-floatlabel>
+        <small *ngIf="resetForm.hasError('passwordMismatch') && resetForm.get('confirmPassword')?.touched" class="p-error">
+          Passwords do not match
+        </small>
+      </div>
+
+      <!-- Submit Button -->
+      <button pButton type="submit" label="Change Password" [disabled]="resetForm.invalid"
+        class="quickcart-login-button w-full mt-2"></button>
+
+      <!-- Go to login -->
+      <p class="quickcart-signup mt-3 text-center">
+        Remembered your password?
+        <a (click)="onGoToLogin()">Back to Login</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- Optional Right Panel -->
+  <div class="quickcart-side quickcart-right-side"></div>
+</div>
