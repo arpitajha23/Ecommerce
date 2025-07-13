@@ -81,7 +81,7 @@ namespace InfrastructureLayer.Services
         {
             try
             {
-                     var user = _context.Appusers.FirstOrDefault(u => u.Email == email && u.Password == encryptedPassword);
+                var user = _context.Appusers.FirstOrDefault(u => u.Email == email && u.Password == encryptedPassword);
                 if (user != null)
                 {
                     return new ServiceResponse

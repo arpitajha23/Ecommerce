@@ -2,6 +2,7 @@
 using DataAccessLayer.Common;
 using DataAccessLayer.DTO_s;
 using InfrastructureLayer.Interfaces;
+using InfrastructureLayer.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PresentationLayer.Models;
@@ -21,14 +22,18 @@ namespace ApplicationLayer.Services
         private readonly IUserRepository _userRepository;
         private readonly EncryptionHelper _encryptionHelper;
         private readonly EmailHelper _emailHelper;
+        private readonly ITokenService _tokenService;
 
 
-        public AuthService(IConfiguration configuration, IUserRepository userRepository, EncryptionHelper encryptionHelper, EmailHelper emailHelper)
+
+        public AuthService(IConfiguration configuration, IUserRepository userRepository, EncryptionHelper encryptionHelper, EmailHelper emailHelper, ITokenService tokenService)
         {
             _configuration = configuration;
             _userRepository = userRepository;
             _encryptionHelper = encryptionHelper;
             _emailHelper = emailHelper;
+            _tokenService = tokenService;
+
 
         }
 
@@ -58,8 +63,8 @@ namespace ApplicationLayer.Services
                     return repoResponse;
 
                 var user = (Appuser)repoResponse.Data;
-  
-                string token = GenerateJwtToken(user);
+
+                string token = _tokenService.GenerateToken(user);
 
                 return new ServiceResponse
                 {
@@ -168,30 +173,6 @@ namespace ApplicationLayer.Services
                 return new ServiceResponse { StatusCode = 500, Message = $"Error: {ex.Message}" };
             }
         }
-
-        private string GenerateJwtToken(Appuser user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["JWTConfigration:Key"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email),
-            // add more claims here if needed
-        }),
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["JWTConfigration:TokenExpirationInMinutes"])),
-                Issuer = _configuration["JWTConfigration:Issuer"],
-                Audience = _configuration["JWTConfigration:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
         // Generates JWT for password reset
         private string GeneratePasswordResetToken(Appuser user)
         {

@@ -1,5 +1,6 @@
 ﻿using ApplicationLayer.Interfaces;
 using DataAccessLayer.DTO_s;
+using InfrastructureLayer.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -22,12 +23,15 @@ namespace PresentationLayer.Controllers
         private readonly IConfiguration _configuration;
         private readonly IAuthService _authService;
         private readonly EcommerceDbContext _context;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(IConfiguration configuration, IAuthService authService, EcommerceDbContext ecommerceDbContext)
+
+        public AuthController(IConfiguration configuration, IAuthService authService, EcommerceDbContext ecommerceDbContext, ITokenService tokenService)
         {
             _configuration = configuration;
             _authService = authService;
             _context = ecommerceDbContext;
+            _tokenService = tokenService;
         }
 
         [HttpPost("Registration")]
@@ -40,7 +44,6 @@ namespace PresentationLayer.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-
         public IActionResult Login(LoginDto userLoginDTO)
         {
             var result = _authService.UserLogin(userLoginDTO);
@@ -51,74 +54,99 @@ namespace PresentationLayer.Controllers
         //Google Authentication Login
         [HttpGet("GoogleLogin")]
         [AllowAnonymous]
-
         public async Task< IActionResult> GoogleLogin()
         {
-            var redirectUrl = Url.Action("GoogleResponse");
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            ////var redirectUrl = Url.Action("GoogleResponse");
+            //var redirectUrl = "http://localhost:5052/api/Auth/GoogleResponse"; // Url.Action("GoogleResponse", "Auth", null, Request.Scheme);
+            //var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            //return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+
+            var redirectUrl = Url.Action("GoogleResponse", "Auth", null, Request.Scheme); // safer
+            //var redirectUrl = Url.Action("GoogleResponse", "Auth");
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl
+            };
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
         [HttpGet("GoogleResponse")]
         [AllowAnonymous]
-
         public async Task<IActionResult> GoogleResponse()
         {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var claimsIdentity = result.Principal?.Identities?.FirstOrDefault();
-            if (claimsIdentity == null)
+            try
             {
-                return BadRequest(new { success = false, message = "No identity found" });
-            }
+                var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var email = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
-            var name = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-            var googleId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (email == null)
-            {
-                return BadRequest(new { success = false, message = "Google login failed: Email not found." });
-            }
-
-            // Check if user exists
-            var user = await _context.Appusers.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null)
-            {
-                user = new Appuser
+                if (!result.Succeeded || result.Principal == null)
                 {
-                    Fullname = name,
-                    Email = email,
-                    Password = null,
-                    Phone = null,
-                    Isemailconfirmed = true,
-                    Isactive = true,
-                    Googleid = googleId,
-                    Createdat = DateTime.Now,
-                    Passwordmodifiedat = null
-                };
+                    return BadRequest(new { success = false, message = "Google authentication failed." });
+                }
 
-                _context.Appusers.Add(user);
-                await _context.SaveChangesAsync();
+                var claimsPrincipal = result.Principal;
+                var claimsIdentity = claimsPrincipal.Identities?.FirstOrDefault();
+                if (claimsIdentity == null)
+                {
+                    return BadRequest(new { success = false, message = "No identity found" });
+                }
+
+                var email = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+                var name = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+                var googleId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (email == null)
+                {
+                    return BadRequest(new { success = false, message = "Google login failed: Email not found." });
+                }
+
+                var user = await _context.Appusers.FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                {
+                    user = new Appuser
+                    {
+                        Fullname = name,
+                        Email = email,
+                        Password = null,
+                        Phone = null,
+                        Isemailconfirmed = true,
+                        Isactive = true,
+                        Googleid = googleId,
+                        Createdat = DateTime.Now,
+                        Passwordmodifiedat = null
+                    };
+
+                    _context.Appusers.Add(user);
+                    await _context.SaveChangesAsync();
+                }
+
+                var token = _tokenService.GenerateToken(user);
+
+                // Cookie-based sign-in (optional)
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    claimsPrincipal,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        AllowRefresh = true
+                    });
+
+                // ✅ Redirect to Angular app with JWT token
+                var redirectUrl = $"http://localhost:4200/endroute/dashboard?token={token}&email={email}&name={Uri.EscapeDataString(name)}";
+                return Redirect(redirectUrl);
+                //var redirectUrl = $"http://localhost:4200/endroute/dashboard?token={token}";
+                //return Redirect(redirectUrl);
             }
-
-            // 🔐 Generate JWT Token
-            //var token = _tokenService.GenerateToken(user); // Create this method to generate JWT
-
-            return Ok(new
+            catch (Exception ex)
             {
-                success = true,
-                message = "Google login successful",
-                //token = token,
-                email = user.Email,
-                name = user.Fullname
-            });
+                return BadRequest(new { success = false, message = "Exception occurred: " + ex.Message });
+            }
         }
 
         //google user logout
         [HttpGet("GoogleLogout")]
         [AllowAnonymous]
-
         public async Task<IActionResult> GoogleLogout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
