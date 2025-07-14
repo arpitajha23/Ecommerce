@@ -46,8 +46,23 @@ namespace PresentationLayer.Controllers
         [AllowAnonymous]
         public IActionResult Login(LoginDto userLoginDTO)
         {
-            var result = _authService.UserLogin(userLoginDTO);
-            return StatusCode(result.StatusCode, result);
+            //var result = _authService.UserLogin(userLoginDTO);
+            //return StatusCode(result.StatusCode, result);
+            try
+            {
+                var user = _authService.UserLogin(userLoginDTO);
+
+                if (user == null)
+                    return Unauthorized("Invalid credentials");
+
+                return Ok(user); // or token response
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                //_logger.LogError(ex, "Login failed");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
 
 
@@ -158,7 +173,6 @@ namespace PresentationLayer.Controllers
 
         [HttpPost("forgot-password")]
         [AllowAnonymous]
-
         public IActionResult ForgotPassword([FromBody] string email)
         {
             var response = _authService.ForgotPassword(email);
@@ -167,7 +181,6 @@ namespace PresentationLayer.Controllers
 
         [HttpPost("reset-password")]
         [AllowAnonymous]
-        
         public IActionResult ResetPassword([FromBody] ResetPasswordDto model)
         {
             var response = _authService.ResetPassword(model.Token, model.NewPassword);

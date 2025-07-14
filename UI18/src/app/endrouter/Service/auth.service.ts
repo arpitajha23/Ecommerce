@@ -16,20 +16,16 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // login(credentials: LoginRequest): Observable<LoginResponse> {
-  //   return this.http.post<LoginResponse>(`${this.apiUrl}/Login`, credentials);
-  // }
+ register(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Registration`, userData);
+  }
+
   login(credentials: LoginRequest): Observable<LoginResponse> {
     const url = `${this.apiUrl}/Login`;
     console.log('Hitting API:', url); // Debug log
     
     return this.http.post<LoginResponse>(url, credentials);
   }
-
-  // googleLogin(): Observable<LoginResponse> {
-  //   // return this.http.post<LoginResponse>(`${this.apiUrl}/GoogleLogin`, {});
-  //   return this.http.get<LoginResponse>(`${this.apiUrl}/GoogleLogin`);
-  // }
   googleLogin(): void {
     window.location.href = `${this.apiUrl}/GoogleLogin`;
   }

@@ -47,6 +47,13 @@ namespace InfrastructureLayer.Services
                     _context.Appusers.Add(users);
                     _context.SaveChanges();
 
+                    // Send Welcome Email
+                    var emailHelper = new EmailHelper(_configuration);
+                    var subject = "Welcome to QuickCart!";
+                    var body = EmailHelper.GetWelcomeBody(users.Fullname);
+                    emailHelper.SendEmail(users.Email, subject, body);
+
+
                     return new ServiceResponse
                     {
                         StatusCode = 200,

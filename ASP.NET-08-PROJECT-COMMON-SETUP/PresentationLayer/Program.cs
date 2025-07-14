@@ -48,7 +48,7 @@ builder.Services.AddAuthentication(options =>
 // Add services to the container.
 //DB CONTEXT
 builder.Services.AddDbContext<EcommerceDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionStrings")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("EcommerceDb")));
 
 
 ////JwtToken
