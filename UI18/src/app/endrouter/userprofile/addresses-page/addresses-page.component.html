@@ -1,0 +1,54 @@
+<nav>
+  <app-nav></app-nav>
+</nav>
+
+<section class="user-profile-container">
+  <div class="left-section">
+    <app-profile-sidebar></app-profile-sidebar>
+  </div>
+
+  <div class="right-section">
+    <!-- Profile header (optional) -->
+    <!--
+    <div class="profile-header">
+      <img [src]="user.avatarUrl" alt="User Avatar" class="avatar" />
+      <div class="user-info">
+        <h2>Hi, {{ user.first_Name }} {{ user.last_Name }}</h2>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+    -->
+
+    <div class="profile-card-container">
+      <h3>Address Information</h3>
+
+      <div class="address-list">
+        <div *ngFor="let addr of pagedAddresses" class="address-card">
+          <h4> Address</h4>
+          <p><strong>Address Type:</strong> {{ addr.addressType }}</p>
+          <p>{{ addr.address }}</p>
+          <p><strong>Pincode:</strong> {{ addr.pincode }}</p>
+          <button 
+            pButton 
+            type="button" 
+            class="p-button-outlined p-button-sm"
+            (click)="editAddress(addr)">
+            Edit
+          </button>
+        </div>
+      </div>
+
+      <div class="pagination" *ngIf="addresses.length > itemsPerPage">
+        <button 
+          *ngFor="let page of pages" 
+          (click)="changePage(page)" 
+          [class.active]="currentPage === page"
+          pButton 
+          type="button" 
+          class="p-button-outlined p-button-sm">
+          {{ page }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

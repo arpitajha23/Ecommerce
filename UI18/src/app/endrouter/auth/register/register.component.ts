@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -35,12 +35,14 @@ export class RegisterComponent  implements OnInit {
     this.registerForm = this.fb.group({
       fullname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]]
+      password: ['', [
+                  Validators.required,
+                  Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/)]],
+      phone: ['', [Validators.required, Validators.maxLength(10), this.validPhoneNumberValidator()]]
     });
   }
 
-onRegister(): void {
+  onRegister(): void {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: (res) => {
@@ -57,24 +59,28 @@ onRegister(): void {
     }
   }
 
+  // Allow only digits and no more than 10 characters
   allowPhoneInput(event: KeyboardEvent): boolean {
-  const charCode = event.charCode;
-  const input = event.target as HTMLInputElement;
-
-  // Allow '+' only at the beginning
-  if (charCode === 43 && input.selectionStart === 0 && !input.value.includes('+')) {
-    return true;
+    const charCode = event.charCode;
+    return charCode >= 48 && charCode <= 57; // digits 0-9 only
   }
 
-  // Allow digits (0–9)
-  if (charCode >= 48 && charCode <= 57) {
-    return true;
-  }
+// Custom validator for phone numbers
+  validPhoneNumberValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
 
-  event.preventDefault();
-  return false;
-  }
+      const phoneRegex = /^[6-9]\d{9}$/; // Starts with 6–9 and 10 digits
+      const invalidPatterns = ['0000000000', '1234567890', '0123456789'];
 
+      if (!phoneRegex.test(value) || invalidPatterns.includes(value)) {
+        return { invalidPhone: true };
+      }
+
+      return null;
+    };
+  }
   onBackToLogin(): void {
     this.router.navigate(['']);
   }

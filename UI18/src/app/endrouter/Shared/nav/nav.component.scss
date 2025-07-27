@@ -1,0 +1,95 @@
+.top-bar {
+  background-color: black;
+  color: white;
+  padding: 5px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    i {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .cart-icon::after {
+      content: '3'; // example cart count
+      font-size: 0.7rem;
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      position: relative;
+      top: -10px;
+      left: -10px;
+    }
+  }
+}
+
+.main-nav {
+  background-color: #273591;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 20px;
+
+    a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+
+      &.admin {
+        background-color: #ff5722;
+        padding: 4px 10px;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+
+    input {
+      padding: 5px;
+      border: none;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+    }
+
+    button {
+      background-color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+
+      i {
+        color: #273591;
+      }
+    }
+  }
+}

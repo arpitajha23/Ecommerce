@@ -13,6 +13,7 @@ import { DividerModule } from 'primeng/divider';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { AuthService } from '../../Service/auth.service';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class ForgotPasswordComponent  implements OnInit {
 
   constructor(private fb: FormBuilder, 
       private router: Router,
+      private authService: AuthService
     // private messageService: MessageService
   ) {}
 
@@ -47,17 +49,43 @@ export class ForgotPasswordComponent  implements OnInit {
   }
 
   onSubmit(): void {
+    debugger
     if (this.forgotPasswordForm.valid) {
       const email = this.forgotPasswordForm.value.email;
-      // Call API to send reset password link
-      // this.messageService.add({
-      //   severity: 'success',
-      //   summary: 'Reset Link Sent',
-      //   detail: 'Please check your email.',
-      // });
-      console.log('Sending reset password link to:', email);
+
+      this.authService.forgotPassword(email).subscribe({
+        next: (res) => {
+          console.log('Reset password link sent to:', email);
+          const { otpId, token, userId, email: maskedEmail } = res.data;
+          // Store only the necessary info
+          sessionStorage.setItem('otpId', otpId);
+          sessionStorage.setItem('resetToken', token);
+          sessionStorage.setItem('userId', userId);
+          sessionStorage.setItem('email', maskedEmail);
+
+          this.forgotPasswordForm.reset();
+          this.router.navigate(['']); 
+
+          // this.messageService.add({
+          //     severity: 'success',
+          //     summary: 'Reset Link Sent',
+          //     detail: 'Please check your email.',
+          // });
+        },
+        error: (err: any) => {
+          console.error('Error sending reset password link:', err);
+          // this.messageService.add({
+          //   severity: 'error',
+          //   summary: 'Error',
+          //   detail: 'Could not send reset link. Try again later.',
+          // });
+        }
+      });
+    } else {
+      this.forgotPasswordForm.markAllAsTouched();
     }
   }
+
 
   onBackToLogin(): void {
     // Navigate back to login (implement routing or use router.navigate)

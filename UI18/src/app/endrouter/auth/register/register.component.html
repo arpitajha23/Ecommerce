@@ -30,31 +30,80 @@
           Valid email is required
         </small>
       </div>
-
-      <!-- Phone -->
+      
+       <!-- Phone Field -->
       <div class="quickcart-form-group">
-        <p-floatlabel>
-          <input id="phone" type="text" pInputText formControlName="phone" placeholder="Phone"
-            [ngClass]="{ 'p-invalid': registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched }" />
-        </p-floatlabel>
-        <small *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched" class="p-error">
-          Phone number is required
-        </small>
+          <p-floatlabel>
+            <input
+              type="text"
+              id="phone"
+              pInputText
+              placeholder="Phone Number"
+              formControlName="phone"
+              maxlength="10"
+              (keypress)="allowPhoneInput($event)"
+              [ngClass]="{
+                'p-invalid': registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched
+              }"
+            />
+          </p-floatlabel>
+
+          <!-- Validation messages -->
+          <small
+            *ngIf="
+              registerForm.get('phone')?.hasError('required') &&
+              registerForm.get('phone')?.touched
+            "
+            class="p-error"
+          >
+            Phone number is required
+          </small>
+          <small
+        *ngIf="
+          registerForm.get('phone')?.hasError('maxlength') &&
+          registerForm.get('phone')?.touched
+        "
+        class="p-error"
+      >
+        Phone number must be 10 digits
+          </small>
+          <small
+            *ngIf="
+              registerForm.get('phone')?.hasError('invalidPhone') &&
+              registerForm.get('phone')?.touched
+            "
+            class="p-error"
+          >
+            Enter a valid phone number
+          </small>
       </div>
 
       <!-- Password -->
-      <div class="quickcart-form-group">
-        <p-floatlabel>
-          <p-password id="password" formControlName="password" [feedback]="false" [toggleMask]="true"
-            placeholder="Password"
-            inputStyleClass="p-inputtext"
-            [ngClass]="{ 'p-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched }">
-          </p-password>
-        </p-floatlabel>
-        <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="p-error">
-          Password is required
-        </small>
-      </div>
+    <div class="quickcart-form-group">
+      <p-floatlabel>
+        <p-password
+          id="password"
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          placeholder="Password"
+          inputStyleClass="p-inputtext"
+          [ngClass]="{
+            'p-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched
+          }">
+        </p-password>
+      </p-floatlabel>
+
+      <small *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched" class="p-error">
+        Password is required
+      </small>
+
+    <small *ngIf="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched" class="p-error">
+      Password must be at least 8 characters long and include uppercase, lowercase, number, and special character
+    </small>
+
+    </div>
+
 
       <!-- Submit Button -->
       <button pButton type="submit" label="Sign Up" [disabled]="registerForm.invalid"

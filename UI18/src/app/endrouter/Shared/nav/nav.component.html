@@ -1,1 +1,36 @@
-<p>nav works!</p>
+<!-- Section 1: Top Bar -->
+<div class="top-bar">
+  <div class="left">
+    <span>Welcome to our store</span>
+    <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" placeholder="English"></p-dropdown>
+    <p-dropdown [options]="currencies" [(ngModel)]="selectedCurrency" placeholder="USD"></p-dropdown>
+  </div>
+  <div class="right">
+    <i class="pi pi-shopping-cart cart-icon"></i>
+    <i class="pi pi-heart wishlist-icon"></i>
+    <i class="pi pi-user user-icon"></i>
+  </div>
+</div>
+
+<!-- Section 2: Main Menu -->
+<div class="main-nav">
+  <div class="logo">
+    <i class="pi pi-shopping-bag"></i>
+    <span>EMBRYO</span>
+  </div>
+
+  <div class="nav-links">
+    <a routerLink="/">HOME</a>
+    <a routerLink="/shop">SHOP</a>
+    <a routerLink="/accessories">ACCESSORIES</a>
+    <a routerLink="/categories">CATEGORIES</a>
+    <a routerLink="/pages">PAGES</a>
+    <a routerLink="/contact">CONTACT US</a>
+    <a routerLink="/admin" class="admin">ADMIN PANEL</a>
+  </div>
+
+  <div class="search">
+    <input type="text" placeholder="Search" />
+    <button><i class="pi pi-search"></i></button>
+  </div>
+</div>

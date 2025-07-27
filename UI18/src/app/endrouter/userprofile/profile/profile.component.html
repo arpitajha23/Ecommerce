@@ -1,0 +1,38 @@
+<nav>
+  <app-nav></app-nav>
+</nav>
+
+<section class="user-profile-container">
+  <div class="left-section">
+    <app-profile-sidebar></app-profile-sidebar>
+  </div>
+
+  <div class="right-section">
+    <!-- <div class="profile-header">
+      <img [src]="user.avatarUrl" alt="User Avatar" class="avatar" />
+      <img [src]="usertest?.avatarUrl" alt="Avatar" class="avatar" />
+
+      <div class="user-info">
+        <h2>Hi, {{ user.first_Name }} {{ user.last_Name }}</h2>
+        <p>{{ user.email }}</p>
+      </div>
+    </div> -->
+
+    <div class="profile-card-container">
+      <div class="profile-card">
+        <h3>Profile Information</h3>
+        <!-- <p><strong>First Name:</strong> {{ user.firstName }}</p>
+        <p><strong>Last Name:</strong> {{ user.lastName }}</p> -->
+        <p><strong>First Name:</strong> {{ user?.first_Name }}</p>
+        <p><strong>Last Name:</strong> {{ user?.last_Name }}</p>
+        <p><strong>Gender:</strong> {{ user.gender }}</p>
+        <p><strong>Date of birth:</strong> {{ user.dob | date: 'MMM,dd,yyyy' }}</p>
+        <p><strong>Mobile Number:</strong> {{ user.mobile }}</p>
+        <!-- <p><strong>Location:</strong> {{ user.location }}</p> -->
+        <p><strong>E-mail id:</strong> {{ user.email }}</p>
+
+        <button pButton type="button" label="Edit" class="p-button-sm p-button-warning mt-2"></button>
+      </div>
+    </div>
+  </div>
+</section>

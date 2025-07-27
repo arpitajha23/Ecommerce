@@ -1,0 +1,10 @@
+<div class="profile-header">
+    <!-- <img [src]="user.avatarUrl" alt="User Avatar" class="avatar" /> -->
+    <img [src]="usertest?.avatarUrl" alt="Avatar" class="avatar" />
+
+    <div class="user-info">
+        <h2>Hi, {{ user?.first_Name }} {{ user?.last_Name }}</h2>
+        <p>{{ user?.email }}</p>
+    </div>
+</div>
+<p-panelMenu [model]="items" styleClass="profile-sidebar"></p-panelMenu>

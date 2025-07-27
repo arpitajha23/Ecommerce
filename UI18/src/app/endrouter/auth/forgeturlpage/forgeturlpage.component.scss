@@ -6,10 +6,10 @@
 
   .quickcart-side {
     flex: 1;
-    background: url('/assets/reset-side.jpg') no-repeat center center;
-    background-size: cover;
+    // background: url('/assets/reset-side.jpg') no-repeat center center;
+    // background-size: cover;
     // Optional: use gradient or solid color instead
-    // background: linear-gradient(to bottom, #dfe9f3, #ffffff);
+    background: linear-gradient(to bottom, #dfe9f3, #ffffff);
   }
 
   .quickcart-center-form {

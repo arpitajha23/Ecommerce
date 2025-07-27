@@ -8,6 +8,12 @@
             </div>
             <h2 class="welcome-title">Welcome Back!</h2>
             <p class="welcome-text">Sign in to continue shopping, manage your orders, and unlock exclusive offers.</p>
+            <div class="quickcart-forgot">
+                By continuing, you agree to QuickCart's
+                <a (click)="onTermsOfUse()">Terms of Use</a> and
+                <a (click)="onPrivacyPolicy()">Privacy Policy</a>.
+                
+            </div>
         </div>
 
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="quickcart-login-form">
@@ -33,11 +39,6 @@
             <!-- Password -->
             <div class="quickcart-form-group flex items-center gap-4">
                 <p-inputgroup>
-                    <!-- <label for="password">Password</label> -->
-                    <!-- <p-inputgroup-addon>
-                        <i class="pi pi-lock"></i>
-                    </p-inputgroup-addon> -->
-
                     <p-floatlabel>
                         <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="false"
                             inputStyleClass="p-inputtext" class="p-password w-full"
@@ -53,12 +54,22 @@
                 </small>
 
             </div>
+
+            <!-- <div class="g-recaptcha" data-sitekey="6LeCuoIrAAAAAKMtEiEy7on85kbTR9cOywZ-_go_"></div>
+            <small *ngIf="captchaError" class="p-error">Please verify you are not a robot</small> -->
+            <!-- <div id="captcha-container" class="g-recaptcha">
+              <div class="g-recaptcha" data-sitekey="6LeCuoIrAAAAAKMtEiEy7on85kbTR9cOywZ-_go_" (callback)="onCaptchaResolved($event)"></div></div> -->
+
+
             <div class="quickcart-forgot">
                 <a (click)="onForgotPassword()">Forgot Password?</a>
             </div>
+             
 
             <!-- Sign In Button -->
-            <button pButton type="submit" label="Sign In" [disabled]="loginForm.invalid"
+            <!-- <button pButton type="submit" label="Sign In" [disabled]="loginForm.invalid || !captchaToken"
+                class="quickcart-login-button "></button> -->
+                <button pButton type="submit" label="Sign In" [disabled]="loginForm.invalid"
                 class="quickcart-login-button "></button>
 
             <p-divider align="center" type="dotted">

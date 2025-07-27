@@ -5,6 +5,12 @@ export class LoginResponse {
     public expiresIn!: number;
     public userId!: string;
     public name!: string;
-    public StatusCode: any;
+    public statusCode: any;
 
+}
+
+
+export class LoginApiResponse {
+  data!: LoginResponse;
+  statusCode!: number;
 }
