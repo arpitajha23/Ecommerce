@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.DTO_s;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace ApplicationLayer.Interfaces
 {
     public interface IProfileService
     {
+        Task<UserProfileDto> GetUserDetailsbyId(long UserId);
+        Task<List<UserAddressDto>> GetAddressesByUserIdAsync(int userId);
+
     }
 }

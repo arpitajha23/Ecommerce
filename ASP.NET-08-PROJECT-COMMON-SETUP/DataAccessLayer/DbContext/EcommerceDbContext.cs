@@ -44,13 +44,9 @@ public partial class EcommerceDbContext : DbContext
 
     public virtual DbSet<Wishlist> Wishlists { get; set; }
 
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    //=> optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Ecommerce;Username=postgres;Password=welcome");//
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Ecommerce;Username=postgres;Password=welcome");
+    public DbSet<PasswordReset> PasswordResets { get; set; }
 
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appuser>(entity =>
@@ -100,6 +96,10 @@ public partial class EcommerceDbContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .HasColumnName("phone");
+            modelBuilder.Entity<Appuser>()
+                .Property(e => e.Salt)
+                .HasColumnName("salt");
+
         });
 
         modelBuilder.Entity<Cart>(entity =>

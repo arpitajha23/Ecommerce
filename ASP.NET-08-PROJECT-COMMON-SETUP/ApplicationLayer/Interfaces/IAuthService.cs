@@ -11,9 +11,10 @@ namespace ApplicationLayer.Interfaces
     {
         ServiceResponse UserRegister(EndUserRegistration userRegistrationDTO);
         ServiceResponse UserLogin(LoginDto userLoginDTO);
-        ServiceResponse ForgotPassword(string email);
+        Task<ServiceResponse> ForgotPassword(string email);
 
-        ServiceResponse ResetPassword(string token, string newPassword);
+        Task<ServiceResponse> ResetPassword(string token, int otp, string newPassword, long otpId);
+        Task<ServiceResponse> ValidateResetTokenAsync(string token);
 
     }
 }

@@ -16,7 +16,11 @@ namespace InfrastructureLayer.Interfaces
 
         Appuser GetUserByEmail(string email);
 
+        Task<Appuser> GetUserByIdAsync(long userId);
         ServiceResponse UpdateUserAsync(Appuser user);
+        //Task<string> GenerateOtpAsync(int userId, string purpose, int validityMinutes);
+        //Task<bool> VerifyOtpAsync(int userId, string otp, string purpose);
+        //Task<string?> GetLatestValidOtpAsync(int userId, string purpose);
 
 
     }

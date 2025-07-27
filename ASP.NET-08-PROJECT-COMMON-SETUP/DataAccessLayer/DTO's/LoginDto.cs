@@ -16,5 +16,7 @@ namespace DataAccessLayer.DTO_s
 
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; }
+        //public string RecaptchaToken { get; set; }
+
     }
 }

@@ -160,5 +160,35 @@ namespace DataAccessLayer.Common
     ";
         }
 
+        public static string GetOtpBody(string otp)
+        {
+            return $@"
+        <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px;'>
+            <h2 style='color: #10b981;'>Your OTP Code</h2>
+            <p>Hello,</p>
+            <p>Your One-Time Password (OTP) is:</p>
+            <div style='font-size: 24px; font-weight: bold; color: #10b981; margin: 16px 0;'>{otp}</div>
+            <p>This OTP is valid for <strong>30 minutes</strong>.</p>
+            <p style='color: #6b7280;'>If you did not request this, please ignore this email.</p>
+            <hr style='margin-top: 24px;'>
+            <p style='font-size: 12px; color: #9ca3af;'>QuickCart Team</p>
+        </div>";
+        }
+
+        public static string GetResetLinkBody(string resetLink)
+        {
+            return $@"
+        <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px;'>
+            <h2 style='color: #10b981;'>Reset Your Password</h2>
+            <p>Hello,</p>
+            <p>Click the button below to reset your password:</p>
+            <a href='{resetLink}' style='display: inline-block; background-color: #10b981; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin: 20px 0;'>Reset Password</a>
+            <p>This link will expire in <strong>30 minutes</strong>.</p>
+            <p style='color: #6b7280;'>If you did not request this, you can safely ignore this email.</p>
+            <hr style='margin-top: 24px;'>
+            <p style='font-size: 12px; color: #9ca3af;'>QuickCart Team</p>
+        </div>";
+        }
+
     }
 }

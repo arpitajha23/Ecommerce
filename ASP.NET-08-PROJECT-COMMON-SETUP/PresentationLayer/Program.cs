@@ -1,5 +1,6 @@
 using ApplicationLayer.Interfaces;
 using ApplicationLayer.Services;
+using Dapper;
 using DataAccessLayer.Common;
 using InfrastructureLayer.Interfaces;
 using InfrastructureLayer.Services;
@@ -51,36 +52,13 @@ builder.Services.AddDbContext<EcommerceDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("EcommerceDb")));
 
 
-////JwtToken
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddJwtBearer(options =>
-//{
-//    options.RequireHttpsMetadata = false; // but enable this true for the prodctions
-//    options.SaveToken = true;
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidIssuer = builder.Configuration["JWTConfigration:Issuer"],
-//        ValidAudience = builder.Configuration["JWTConfigration:Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfigration:Key"]!)),
-//        ValidateIssuerSigningKey = true,
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ClockSkew = TimeSpan.Zero,// Optional: Set to zero to avoid delay in token expiration
-//        ValidateLifetime = true // Validate the token's lifetime 
-//    };
-//});
-
-//builder.Services.AddAuthentication();
-
 //SERVICE
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IOtpService, OtpService>();
+
 
 
 //REPO
@@ -88,12 +66,15 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISendMail, SendMail>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IOtpRepository, OtpRepository>();
 
 
 builder.Services.AddSingleton<EncryptionHelper>(); // Or AddScoped if needed
 builder.Services.AddSingleton<EmailHelper>(); // Or AddScoped if needed
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

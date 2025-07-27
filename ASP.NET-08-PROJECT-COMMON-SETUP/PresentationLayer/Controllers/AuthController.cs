@@ -44,12 +44,11 @@ namespace PresentationLayer.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        public IActionResult Login(LoginDto userLoginDTO)
+        public async Task<IActionResult> Login(LoginDto userLoginDTO)
         {
-            //var result = _authService.UserLogin(userLoginDTO);
-            //return StatusCode(result.StatusCode, result);
             try
             {
+                // 1. Proceed with your login logic
                 var user = _authService.UserLogin(userLoginDTO);
 
                 if (user == null)
@@ -59,8 +58,6 @@ namespace PresentationLayer.Controllers
             }
             catch (Exception ex)
             {
-                // Log exception
-                //_logger.LogError(ex, "Login failed");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -171,20 +168,28 @@ namespace PresentationLayer.Controllers
         }
 
 
-        [HttpPost("forgot-password")]
+        [HttpPost("ForgotPassword")]
         [AllowAnonymous]
-        public IActionResult ForgotPassword([FromBody] string email)
+        public async Task<IActionResult> ForgotPassword([FromBody] EmailRequest request)
         {
-            var response = _authService.ForgotPassword(email);
+            var response = await _authService.ForgotPassword(request.Email);
             return StatusCode(response.StatusCode, response);
         }
 
-        [HttpPost("reset-password")]
+        [HttpPost("ResetPassword")]
         [AllowAnonymous]
-        public IActionResult ResetPassword([FromBody] ResetPasswordDto model)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
         {
-            var response = _authService.ResetPassword(model.Token, model.NewPassword);
+            var response = await _authService.ResetPassword(model.Token, model.Otp, model.NewPassword, model.otpId);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpGet("validate-reset-token")]
+        public async Task<IActionResult> ValidateResetToken([FromQuery] string token)
+        {
+            var result = await _authService.ValidateResetTokenAsync(token);
+            return StatusCode(result.StatusCode, result);
+        }
+
     }
 }

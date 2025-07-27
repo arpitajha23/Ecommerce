@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.DTO_s
 {
-    public class ResetPasswordDto
+    public class ResendOtpResultDto
     {
-        public string Token { get; set; }
-        public string NewPassword { get; set; }
+        public long UserOtpId { get; set; }
         public int Otp { get; set; }
-
-        public int otpId { get; set; } 
-
-
+        public long UserId { get; set; }
     }
 
 }
